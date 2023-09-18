@@ -14,6 +14,8 @@ class HypixelException(Exception):
 
 
 class Hypixel:
+    """The general class used to make API calls."""
+
     def __init__(self, key: str):
         self._key = key
         self._session = ClientSession("https://api.hypixel.net")
@@ -26,6 +28,7 @@ class Hypixel:
         return self
 
     async def close(self):
+        """Close the session, if you aren't using context managers."""
         await self._session.close()
 
     async def __aexit__(self, exc, exc_info, traceback):
@@ -69,6 +72,7 @@ class Hypixel:
             )
 
     async def get_skyblock_profile(self, profile_id) -> profiles.Profile:
+        """Get skyblock data about a profile, given a profile ID."""
         async with self._session.get(
             "/skyblock/profile",
             params={"profile": profile_id},
@@ -80,6 +84,7 @@ class Hypixel:
             return profiles.Profile.process_json(data["profile"])
 
     async def get_skyblock_profiles(self, uuid) -> list[profiles.Profile]:
+        """Get all the skyblock profiles of a player, given the UUID."""
         async with self._session.get(
             "/skyblock/profiles", params={"uuid": uuid}, headers={"API-Key": self.key}
         ) as r:
@@ -89,6 +94,7 @@ class Hypixel:
             return [profiles.Profile.process_json(i) for i in data["profiles"]]
 
     async def get_bazaar_data(self) -> dict[str, bazaar.Product]:
+        """Get the bazaar data."""
         async with self._session.get("/skyblock/bazaar") as r:
             data = await r.json()
             if not data["success"]:
@@ -98,6 +104,7 @@ class Hypixel:
             }
 
     async def get_auction_house_data(self, page=0) -> auctionhouse.AuctionHouse:
+        """Get all auctions on some page."""
         async with self._session.get("/skyblock/auctions", params={"page": page}) as r:
             data = await r.json()
             if not data["success"]:
