@@ -3,8 +3,8 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "py-hypixel"
-version = "0.0.1"
+name = "hypixel-Mathman2028"
+version = "1.0.0"
 authors = [
   { name="Mathman2028", email="mathman2028@gmail.com" },
 ]
